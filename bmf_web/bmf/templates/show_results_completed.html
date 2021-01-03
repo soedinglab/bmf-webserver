@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="d-flex">
+    <div>
+        {% if job.job_name != "" %}
+            <H2>Results for: {{job.job_name}}</H2>
+        {% else %}
+            <H2>Results </H2>
+        {% endif %}
+    </div>
+    <div class="ml-auto">
+        <a class="btn btn-info bmfbutton" aria-label="Download" href="{% url 'download_results' job.job_id %}">
+            <span class="fa fa-download" aria-hidden="true"></span>&nbsp;&nbsp;Download
+        </a>        
+    </div>  
+</div> 
+<hr/>
+
+
+{% if job.is_bipartite %}
+<div class="alert alert-success bmfalertbox hugemargin" role="alert">
+    Looks like the motif is bipartite!
+</div>
+{% else %}
+<div class="alert alert-secondary bmfalertbox hugemargin" role="alert">
+    The motif does not seem to be bipartite! To be sure, you can run BMF with a bigger motif length.
+</div>
+{% endif %}
+
+<div class="hugemargin">
+    <H4>BMF motif logo: </H4>
+    <img src="{% get_media_prefix %}/{{job.output_prefix_relpath}}_seqLogo.png" alt="BMF logo" width="400">
+</div>
+<div class="hugemargin">
+    <H4>Optimization progress and training ROC curve: </H4>
+    <img src="{% get_media_prefix %}/{{job.output_prefix_relpath}}_cs{{job.core_size}}_0.png" alt="BMF results over iterations" width="800">
+</div>
+{% endblock %}

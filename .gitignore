@@ -1,0 +1,6 @@
+*.tar.gz
+.env
+.DS_Store
+__pycache__
+bmf_web/bmf/templates/contact.html
+bmf_web/bmf/templates/imprint.html

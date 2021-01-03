@@ -1,0 +1,44 @@
+.bmfalertbox {
+    font-size: 20px
+  }
+
+.hugemargin {
+    margin: 50px
+}
+
+.formmargin {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.alignright {
+    text-align: right
+}
+
+.bmfbutton {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 15px
+}
+
+#contentbox {
+    padding-top: 25px;
+    min-height: 87vh
+}
+
+.bmfcardbody{
+    background: rgb(255, 253, 247);
+    height: 370px;
+    margin: 30px auto;
+  }
+  
+.scrollable{
+    overflow-y: auto;
+    max-height: 300px;
+  }
+
+.info_text_just {
+    font-size: 15px;
+    text-align: justify;
+  }

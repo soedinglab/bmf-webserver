@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:latest
+    command: mysqld --default-authentication-plugin=mysql_native_password --user=root
+    volumes:
+      - ${MYSQL_DB_DIR}:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  redis_celery:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    volumes:
+      - ${REDIS_DB_DIR}:/data
+
+  celery:
+    image: ${SERVER_DOCKER_IMAGE}
+    command: supervisord -c /code/worker.conf --loglevel ${SUPERVISOR_LOG_LEVEL}
+    volumes: &server_volumes
+      - ${WEBSERVER_DIR}:/code
+      - ${MEDIA_DIR}:/media
+      - ${LOG_DIR}:/logs
+      - ${TMP_DIR}:/tmp_dir
+    links:
+      - redis_celery
+      - db
+    environment: &env_vars
+        - DJANGO_DEBUG=${DJANGO_DEBUG}
+        - SECRET_KEY=${SECRET_KEY}
+        - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+        - DB_HOST=${DB_HOST}
+        - DB_NAME=${DB_NAME}
+        - DB_PORT=${DB_PORT}
+        - DB_USER=${DB_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_STARTUP_DELAY_SECONDS=${MYSQL_STARTUP_DELAY_SECONDS}
+        - JOB_TIME_LIMIT=${JOB_TIME_LIMIT}
+        - LOG_LEVEL=${LOG_LEVEL}
+        - BMF_LOG_LEVEL=${BMF_LOG_LEVEL}
+        - N_PARALLEL_JOBS=${N_PARALLEL_JOBS}
+
+  web:
+    image: ${SERVER_DOCKER_IMAGE}
+    command: /usr/local/bin/dumb-init -- ./run_server.sh
+    volumes: *server_volumes
+    ports:
+      - ${SERVER_HOST_PORT}:10080
+    links:
+      - db
+      - redis_celery
+      - celery
+    environment: *env_vars

@@ -1,0 +1,13 @@
+celery<5
+redis
+mysqlclient
+django>=2.2,<2.3
+numpy
+cython
+scipy
+pandas
+biopython
+sklearn
+matplotlib
+django-crispy-forms
+django-widget-tweaks

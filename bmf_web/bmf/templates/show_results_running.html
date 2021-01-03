@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block head %}
+    <meta http-equiv="refresh" content="15">
+{% endblock %}
+
+{% block content %}
+
+{% if job.job_name != "" %}
+    <H2>{{job.job_name}} (Job status: {{job.status}})</H2>
+{% else %}
+    <H2>Job status: {{job.status}} </H2>
+{% endif %}
+
+<hr>
+
+<div class="alert alert-secondary hugemargin" role="alert">
+    <i class="fas fa-info-circle fa-lg"></i> Your job has been submitted. Once it starts running you can find its progress below. This page refreshes automatically.
+    Please bookmark this page for easy access to your results! This link will be active for a month.
+</div>
+
+
+<div class="hugemargin">
+
+    {% if current_file %} 
+        <H4>Optimization progress and training ROC curve: </H4>
+        <img src="{% get_media_prefix %}/{{job.output_relpath}}/{{current_file}}" alt="BMF results over iterations" width="800">
+    {% endif %}
+
+    <div class="card bmfcardbody">
+        <div class="card-header">
+        log file
+        </div>
+        <div class="card-body scrollable">
+            <pre><code>
+                {{log_content}}
+            </code></pre>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
