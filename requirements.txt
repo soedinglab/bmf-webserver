@@ -1,4 +1,4 @@
-celery<5
+celery>=5.2.2,<6
 redis
 mysqlclient
 django>=2.2,<2.3
