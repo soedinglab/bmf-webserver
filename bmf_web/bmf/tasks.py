@@ -4,7 +4,7 @@ import traceback
 import sys
 import subprocess
 from contextlib import redirect_stderr, redirect_stdout
-from celery import task
+from celery import shared_task as task
 from .models import BMFJob
 from bmf_tool.utils import is_bipartite, prefix2params
 
